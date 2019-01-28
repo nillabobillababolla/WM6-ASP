@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Index";
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div>
+    <p>
+        Bu yazımızda MVC de partial view kullanıp bu view içerisne başka bir sayfadan model yollayacağız. Web Formda User Control yerine MVC de bu PartialView leri kullanacağız. Fark olarak Partial Viewler User Controlde bulunan ViewState, PostBack gibi özellikleri barındırmazlar. Direk yolladığımız model üzerinden işlem yaparlar. Zaten MVC genel mimarisi de buna göre dizayn edilmiş. Tekrar etmemiz gereken nesneleri, html sayfalarını rahatlıktla bu şekilde kullanabiliriz.
+        Öncelikle bir partialview ekliyoruz. View Kısmından Add View dedikten sonra karşımıza gelen ekrandan Createa partial view seçeneğini seçip Partialımız oluşturuyoruz
+    </p>
+</div>
+@{
+    Html.RenderAction("UrunGetir");
+}
+
+@section style
+{
+    <style type="text/css">
+        body {
+            background-color: yellow !important;
+        }
+    </style>
+}
