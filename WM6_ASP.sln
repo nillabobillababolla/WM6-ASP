@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AjaxIslemler", "AjaxIslemle
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcExamples-01-Layout", "MvcExamples-01-Layout\MvcExamples-01-Layout.csproj", "{5D1BE21D-9A1E-4665-B8F7-EF70474A00F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcExamples-02-WebSiteProject", "MvcExamples-02-WebSiteProject\MvcExamples-02-WebSiteProject.csproj", "{4A7254DC-8E49-45EF-90F0-5290583B6E94}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{5D1BE21D-9A1E-4665-B8F7-EF70474A00F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D1BE21D-9A1E-4665-B8F7-EF70474A00F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D1BE21D-9A1E-4665-B8F7-EF70474A00F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A7254DC-8E49-45EF-90F0-5290583B6E94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A7254DC-8E49-45EF-90F0-5290583B6E94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A7254DC-8E49-45EF-90F0-5290583B6E94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A7254DC-8E49-45EF-90F0-5290583B6E94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +36,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{BDD8B8D3-6567-42B9-848B-5F51C8A0EBBE} = {D37B5EB8-6D10-4572-B89C-F1C9B19688EC}
 		{5D1BE21D-9A1E-4665-B8F7-EF70474A00F7} = {D37B5EB8-6D10-4572-B89C-F1C9B19688EC}
+		{4A7254DC-8E49-45EF-90F0-5290583B6E94} = {D37B5EB8-6D10-4572-B89C-F1C9B19688EC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E442A7B4-E887-40FA-858E-0EFA10D326E8}
