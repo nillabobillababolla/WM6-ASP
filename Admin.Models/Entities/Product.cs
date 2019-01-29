@@ -15,7 +15,7 @@ namespace Admin.Models.Entities
         {
             this.Id = Guid.NewGuid();
         }
-
+        //Yorum satırı
         [DisplayName("Birim")]
         public int Quantity { get; set; }
 
