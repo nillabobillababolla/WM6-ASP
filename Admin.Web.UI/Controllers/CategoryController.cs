@@ -1,11 +1,10 @@
-﻿using System;
-using System.Data.Entity.Validation;
-using System.Web.Mvc;
-using System.Web.UI.WebControls;
-using Admin.BLL.Helpers;
+﻿using Admin.BLL.Helpers;
 using Admin.BLL.Repository;
 using Admin.Models.Entities;
 using Admin.Models.ViewModels;
+using System;
+using System.Data.Entity.Validation;
+using System.Web.Mvc;
 
 // ReSharper disable Mvc.ViewNotResolved
 
@@ -22,7 +21,6 @@ namespace Admin.Web.UI.Controllers
         public ActionResult Add()
         {
             ViewBag.CategoryList = GetCategorySelectList();
-
             return View();
         }
 
@@ -78,6 +76,36 @@ namespace Admin.Web.UI.Controllers
 
         }
 
+        [HttpGet]
+        public ActionResult Update()
+        {
+            ViewBag.CategoryList = this.GetCategorySelectList();
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(Category Model)
+        {
+            try
+            {
+               var category = new CategoryRepo().GetById(Model.Id);
+               if (category == null)
+               {
+                  return RedirectToAction("Update", "Category");
+               }
+
+               category.CategoryName = Model.CategoryName;
+               category.SupCategoryId = Model.SupCategoryId;
+               category.TaxRate = Model.TaxRate;
+               new CategoryRepo().Update(category);
+               return RedirectToAction("Update", "Category");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Update", "Category");
+            }
+        }
 
     }
 }
