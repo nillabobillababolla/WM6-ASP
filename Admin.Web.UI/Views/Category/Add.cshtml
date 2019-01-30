@@ -23,6 +23,7 @@
                     @class = "form-horizontal"
                 }))
                 {
+                    @Html.AntiForgeryToken()
                     <div class="form-group">
                         @Html.LabelFor(x => x.CategoryName, new { @class = "col-md-3 control-label" })
                         <div class="col-md-7">
@@ -43,6 +44,7 @@
                         <div class="col-md-7">
                             @Html.TextBoxFor(x => x.TaxRate, new { @class = "form-control", placeholder = "Kdv Oranı", type = "number", step = "1" })
                             <br /><span class="text-danger">@Html.ValidationMessageFor(x => x.TaxRate)</span>
+                                  <br /> <span class="text-green">@Html.ViewBag.Message</span>
                         </div>
                     </div>
 

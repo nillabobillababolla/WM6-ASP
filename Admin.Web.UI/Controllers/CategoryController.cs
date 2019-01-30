@@ -25,6 +25,7 @@ namespace Admin.Web.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken] // Fishing yöntemine karşı siteyi koruma.
         public ActionResult Add(Category model)
         {
             try
@@ -41,6 +42,7 @@ namespace Admin.Web.UI.Controllers
                     return View(model);
                 }
                 new CategoryRepo().Insert(model);
+                ViewBag.Message = $"{model.CategoryName} isimli kategori basariyla eklendi.";
                 return RedirectToAction("Add", "Category");
             }
             catch (Exception ex)
@@ -51,7 +53,7 @@ namespace Admin.Web.UI.Controllers
                     ActionName = "Add",
                     ControllerName = "Category"
                 };
-                return RedirectToAction("Add", "Category");
+                return RedirectToAction("Error", "Home");
             }
 
         }
