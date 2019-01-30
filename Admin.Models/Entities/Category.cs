@@ -9,16 +9,14 @@ namespace Admin.Models.Entities
     [Table("Categories")]
     public class Category : BaseEntity<int>
     {
-        private decimal _taxRate;
-
         [StringLength(100, ErrorMessage = "Kategori adi 3-100 karakter arasinda olabilir.", MinimumLength = 3)]
         [DisplayName("Kategori Adı")]
         [Required]
         public string CategoryName { get; set; }
 
         [DisplayName("Kdv")]
-        [Range(0, 100)]
-        public decimal TaxRate { get=>_taxRate*100; set=>_taxRate=value/100; }
+        [Range(0, 99)]
+        public decimal TaxRate { get; set; }
 
         [DisplayName("Üst Kategori")]
         public int? SupCategoryId { get; set; }
