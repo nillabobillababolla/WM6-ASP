@@ -14,11 +14,13 @@ namespace Admin.Models.Entities
         [Required]
         public string CategoryName { get; set; }
 
+        [DisplayName("Kdv")]
         [Range(0, 1)]
         public decimal TaxRate { get; set; } = 0;
 
-        public int SupCategoryId { get; set; }
-
+        [DisplayName("Üst Kategori")]
+        public int? SupCategoryId { get; set; }
+        
         [ForeignKey("SupCategoryId")]
         public virtual Category SupCategory { get; set; }
 
