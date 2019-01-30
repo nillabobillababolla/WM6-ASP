@@ -8,12 +8,9 @@
 <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
         <!-- Error Titles -->
-      @if (message != null)
-      {
-          <h1 class="display-4 m-b-0 text-green animated bounceIn">@message.ErrorCode</h1>
-          <p class="m-b-lg">@message.Text</p>
-          <a href="@Url.Action(message.ActionName,message.ControllerName)" class="btn btn-info">Geri Git</a>
-      }
+        <h1 class="display-4 m-b-0 text-green">@(message?.ErrorCode ?? 404)</h1>
+        <p class="m-b-lg">@(message?.Text??"Aradiginiz sayfa bulunamadi.")</p>
+        <a href="@Url.Action(message?.ActionName ??"Index",message?.ControllerName??"Home")" class="btn btn-info">Geri Git</a>
         <!-- End Error Titles -->
 
         <!-- Search Form -->

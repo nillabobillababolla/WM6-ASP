@@ -43,6 +43,12 @@ namespace Admin.Web.UI.Controllers
                     ViewBag.CategoryList = GetCategorySelectList();
                     return View(model);
                 }
+
+                if (model.SupCategoryId>0)
+                {
+                    model.TaxRate = new CategoryRepo().GetById(model.SupCategoryId).TaxRate;
+                }
+
                 new CategoryRepo().Insert(model);
                 TempData["Message"] = $"{model.CategoryName} isimli kategori basariyla eklendi.";
                 return RedirectToAction("Add", "Category");
