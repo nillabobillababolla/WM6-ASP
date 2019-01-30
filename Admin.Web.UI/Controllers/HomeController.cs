@@ -9,5 +9,11 @@ namespace Admin.Web.UI.Controllers
         {
             return View();
         }
+
+        public ActionResult Error()
+        {
+            return View();
+        }
+
     }
 }
