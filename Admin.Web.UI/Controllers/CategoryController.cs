@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 // ReSharper disable Mvc.ViewNotResolved
 
 namespace Admin.Web.UI.Controllers
@@ -10,5 +11,13 @@ namespace Admin.Web.UI.Controllers
         {
             return View();
         }
+
+        public ActionResult Add()
+        {
+            ViewBag.CategoryList = GetCategorySelectList();
+
+            return View();
+        }
+
     }
 }

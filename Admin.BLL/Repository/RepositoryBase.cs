@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Admin.BLL.Repository
 {
-    public abstract class RepositoryBase<T, TId> where T : BaseEntity<TId>, IDisposable
+    public abstract class RepositoryBase<T, TId>:IDisposable where T : BaseEntity<TId>
     {
         internal static MyContext DbContext;
         private static DbSet<T> DbObject;
