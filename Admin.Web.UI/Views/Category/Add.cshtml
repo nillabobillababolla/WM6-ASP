@@ -1,4 +1,5 @@
-﻿@using System.Web.UI.WebControls
+﻿@using System.ServiceModel.Channels
+@using System.Web.UI.WebControls
 @model Category
 @{
     ViewBag.Title = "Category Add";
@@ -7,7 +8,13 @@
 
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
-        <div class="card">
+      @if (TempData["Message"]!=null)
+      {
+          <div class="alert alert-success">
+              <p><strong>Başarılı! </strong>@TempData["Message"]</p>
+          </div>
+      }
+      <div class="card">
             <div class="card-header">
                 <h4>Kategori Ekleme Formu</h4>
                 <div class="text text-danger">@Html.ValidationSummary()</div>
@@ -25,26 +32,26 @@
                 {
                     @Html.AntiForgeryToken()
                     <div class="form-group">
-                        @Html.LabelFor(x => x.CategoryName, new { @class = "col-md-3 control-label" })
+                        @Html.LabelFor(x => x.CategoryName, new {@class = "col-md-3 control-label"})
                         <div class="col-md-7">
-                            @Html.TextBoxFor(x => x.CategoryName, new { @class = "form-control", placeholder = "Kategori Adi" })
-                            <br /><span class="text-danger">@Html.ValidationMessageFor(x=>x.CategoryName)</span>
+                            @Html.TextBoxFor(x => x.CategoryName, new {@class = "form-control", placeholder = "Kategori Adi"})
+                            <br/><span class="text-danger">@Html.ValidationMessageFor(x => x.CategoryName)</span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(x => x.SupCategoryId, new { @class = "col-md-3 control-label" })
+                        @Html.LabelFor(x => x.SupCategoryId, new {@class = "col-md-3 control-label"})
                         <div class="col-md-7">
-                            @Html.DropDownListFor(x => x.SupCategoryId, (List<SelectListItem>)ViewBag.CategoryList, new { @class = "form-control", size = "1" })
+                            @Html.DropDownListFor(x => x.SupCategoryId, (List<SelectListItem>) ViewBag.CategoryList, new {@class = "form-control", size = "1"})
                         </div>
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(x => x.TaxRate, new { @class = "col-md-3 control-label" })
+                        @Html.LabelFor(x => x.TaxRate, new {@class = "col-md-3 control-label"})
                         <div class="col-md-7">
-                            @Html.TextBoxFor(x => x.TaxRate, new { @class = "form-control", placeholder = "Kdv Oranı", type = "number", step = "1" })
-                            <br /><span class="text-danger">@Html.ValidationMessageFor(x => x.TaxRate)</span>
-                                  <br /> <span class="text-green">@Html.ViewBag.Message</span>
+                            @Html.TextBoxFor(x => x.TaxRate, new {@class = "form-control", placeholder = "Kdv Oranı", type = "number", step = "1"})
+                            <br/><span class="text-danger">@Html.ValidationMessageFor(x => x.TaxRate)</span>
+
                         </div>
                     </div>
 

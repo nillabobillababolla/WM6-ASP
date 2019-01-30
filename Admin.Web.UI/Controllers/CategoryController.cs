@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Data.Entity.Validation;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using Admin.BLL.Helpers;
 using Admin.BLL.Repository;
 using Admin.Models.Entities;
 using Admin.Models.ViewModels;
@@ -42,8 +44,19 @@ namespace Admin.Web.UI.Controllers
                     return View(model);
                 }
                 new CategoryRepo().Insert(model);
-                ViewBag.Message = $"{model.CategoryName} isimli kategori basariyla eklendi.";
+                TempData["Message"] = $"{model.CategoryName} isimli kategori basariyla eklendi.";
                 return RedirectToAction("Add", "Category");
+            }
+            catch (DbEntityValidationException ex)
+            {
+                TempData["Model"] = new ErrorViewModel()
+                {
+                    Text = $"Bir hata olustu. {EntityHelpers.ValidationMessage(ex)}",
+                    ActionName = "Add",
+                    ControllerName = "Category",
+                    ErrorCode = 500
+                };
+                return RedirectToAction("Error", "Home");
             }
             catch (Exception ex)
             {
@@ -51,7 +64,8 @@ namespace Admin.Web.UI.Controllers
                 {
                     Text = $"Bir hata olustu. {ex.Message}",
                     ActionName = "Add",
-                    ControllerName = "Category"
+                    ControllerName = "Category",
+                    ErrorCode = 500
                 };
                 return RedirectToAction("Error", "Home");
             }
