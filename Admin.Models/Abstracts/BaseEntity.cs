@@ -11,7 +11,7 @@ namespace Admin.Models.Abstracts
         public T Id { get; set; }
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
-        public DateTime? UpdatedTime { get; set; }
+        public DateTime? UpdatedDate { get; set; }
 
     }
 }
