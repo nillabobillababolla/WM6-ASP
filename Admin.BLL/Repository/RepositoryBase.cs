@@ -1,15 +1,18 @@
-﻿using Admin.DAL;
-using Admin.Models.Abstracts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+
+using Admin.DAL;
+using Admin.Models.Abstracts;
+
 // ReSharper disable StaticMemberInGenericType
 
 namespace Admin.BLL.Repository
 {
-    public abstract class RepositoryBase<T, TId>:IDisposable where T : BaseEntity<TId>
+    public abstract class RepositoryBase<T, TId> : IDisposable
+        where T : BaseEntity<TId>
     {
         internal static MyContext DbContext;
         private static DbSet<T> DbObject;
