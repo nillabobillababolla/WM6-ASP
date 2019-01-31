@@ -2,6 +2,9 @@
 
 namespace Admin.BLL.Services
 {
+    using System;
+    using System.Linq;
+
     public class BarcodeService
     {
         public void Get(string barcode)
@@ -9,7 +12,11 @@ namespace Admin.BLL.Services
             var url = $"http://www.barkodid.com/{barcode}";
             var web = new HtmlWeb();
             var doc = web.Load(url);
-            var list = doc.GetElementbyId("");
+            var section = doc.DocumentNode.SelectNodes("//div[contains(@class,'product-details')]").FirstOrDefault();
+            var bc = section.Element("h1").InnerText.Substring(4);
+            var name = section.Element("h4").InnerText.Trim();
+            var priceT = section.SelectNodes("//div[contains(@class,'product-text')]").FirstOrDefault().Element("span").InnerText.Trim();
+            var price = Convert.ToDecimal(priceT.Substring(0, priceT.Length - 3).Replace(".", ","));
         }
     }
 }

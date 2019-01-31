@@ -40,7 +40,7 @@ namespace Admin.Models.Entities
         public double UnitsInStock { get; set; }
 
         [DisplayName("Fiyat Güncellenme Tarihi")]
-        public DateTime LastPriceUpdate { get; set; }
+        public DateTime LastPriceUpdateDate { get; set; }
 
         [DisplayName("Kategori")]
         public int CategoryId { get; set; }

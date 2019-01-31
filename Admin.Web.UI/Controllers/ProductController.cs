@@ -1,11 +1,11 @@
-﻿using Admin.BLL.Helpers;
+﻿using System;
+using System.Data.Entity.Validation;
+using System.Threading.Tasks;
+using System.Web.Mvc;
+using Admin.BLL.Helpers;
 using Admin.BLL.Repository;
 using Admin.Models.Entities;
 using Admin.Models.ViewModels;
-using System;
-using System.Data.Entity.Validation;
-using System.Web.Mvc;
-using Admin.Web.UI.Models.ViewModels;
 
 namespace Admin.Web.UI.Controllers
 {
@@ -20,38 +20,40 @@ namespace Admin.Web.UI.Controllers
         [HttpGet]
         public ActionResult Add()
         {
-
-            ViewBag.CategoryList = GetCategorySelectList();
             ViewBag.ProductList = GetProductSelectList();
+            ViewBag.CategoryList = GetCategorySelectList();
             return View();
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost]
-        [ValidateAntiForgeryToken] // Fishing yöntemine karşı siteyi koruma.
-        public ActionResult Add(ProductViewModel model)
+        public async Task<ActionResult> Add(Product model)
         {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ProductList = GetProductSelectList();
+                ViewBag.CategoryList = GetCategorySelectList();
+                return View(model);
+            }
+
             try
             {
-                if (!ModelState.IsValid)
-                {
+                if (model.SupProductId.ToString().Replace("0", "").Replace("-", "").Length == 0)
+                    model.SupProductId = null;
 
-                    ViewBag.GetProducts = GetProductSelectList();
-                    ViewBag.CategotyList = GetCategorySelectList();
-                    return View(model);
-                }
-
-                new ProductRepo().Insert(model);
-                TempData["Message"] = $"{model.ProductName} isimli ürün basariyla eklendi.";
-                return RedirectToAction("Add", "Product");
+                model.LastPriceUpdateDate = DateTime.Now;
+                await new ProductRepo().InsertAsync(model);
+                TempData["Message"] = $"{model.ProductName} isimli ürün başarıyla eklenmiştir";
+                return RedirectToAction("Add");
             }
             catch (DbEntityValidationException ex)
             {
                 TempData["Model"] = new ErrorViewModel()
                 {
-                    Text = $"Bir hata olustu. {EntityHelpers.ValidationMessage(ex)}",
+                    Text = $"Bir hata oluştu: {EntityHelpers.ValidationMessage(ex)}",
                     ActionName = "Add",
-                    ControllerName = "Product",
-                    ErrorCode = 400
+                    ControllerName = "Category",
+                    ErrorCode = 500
                 };
                 return RedirectToAction("Error", "Home");
             }
@@ -59,14 +61,13 @@ namespace Admin.Web.UI.Controllers
             {
                 TempData["Model"] = new ErrorViewModel()
                 {
-                    Text = $"Bir hata olustu. {ex.Message}",
+                    Text = $"Bir hata oluştu: {ex.Message}",
                     ActionName = "Add",
-                    ControllerName = "Product",
-                    ErrorCode = 400
+                    ControllerName = "Category",
+                    ErrorCode = 500
                 };
                 return RedirectToAction("Error", "Home");
             }
         }
-
     }
 }

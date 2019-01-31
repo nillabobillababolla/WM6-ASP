@@ -6,6 +6,8 @@ using System.Web.Mvc;
 
 namespace Admin.Web.UI.Controllers
 {
+    using System;
+
     public class BaseController : Controller
     {
         protected List<SelectListItem> GetCategorySelectList()
@@ -80,8 +82,8 @@ namespace Admin.Web.UI.Controllers
             {
                 new SelectListItem()
                 {
-                    Text = "Üst Ürünü Yok",
-                    Value = null
+                    Text = "Perakende Ürünü Yok",
+                    Value = new Guid().ToString()
                 }
             };
             foreach (var product in products)
