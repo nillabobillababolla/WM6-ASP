@@ -80,6 +80,7 @@ namespace Admin.Web.UI.Controllers
         [HttpGet]
         public ActionResult Update(int id = 0)
         {
+            ViewBag.CategoryList = GetCategorySelectList();
             var data = new CategoryRepo().GetById(id);
             if (data == null)
             {
