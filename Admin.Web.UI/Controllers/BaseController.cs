@@ -81,7 +81,7 @@ namespace Admin.Web.UI.Controllers
                 new SelectListItem()
                 {
                     Text = "Üst Ürünü Yok",
-                    Value = "0"
+                    Value = null
                 }
             };
             foreach (var product in products)

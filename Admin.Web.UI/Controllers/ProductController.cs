@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Validation;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Admin.BLL.Helpers;
+﻿using Admin.BLL.Helpers;
 using Admin.BLL.Repository;
 using Admin.Models.Entities;
 using Admin.Models.ViewModels;
+using System;
+using System.Data.Entity.Validation;
+using System.Web.Mvc;
+using Admin.Web.UI.Models.ViewModels;
 
 namespace Admin.Web.UI.Controllers
 {
@@ -30,22 +28,18 @@ namespace Admin.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken] // Fishing yöntemine karşı siteyi koruma.
-        public ActionResult Add(Product model)
+        public ActionResult Add(ProductViewModel model)
         {
             try
             {
-                //if (model.SupProductId.ToString()=="0")
-                //{
-                //    model.SupProductId = null;
-                //}
-
                 if (!ModelState.IsValid)
                 {
-                    ModelState.AddModelError("ProductName","Hata.");
-                    ViewBag.ProductList = GetProductSelectList();
+
+                    ViewBag.GetProducts = GetProductSelectList();
+                    ViewBag.CategotyList = GetCategorySelectList();
                     return View(model);
                 }
-                
+
                 new ProductRepo().Insert(model);
                 TempData["Message"] = $"{model.ProductName} isimli ürün basariyla eklendi.";
                 return RedirectToAction("Add", "Product");
