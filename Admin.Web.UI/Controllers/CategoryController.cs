@@ -17,6 +17,7 @@ namespace Admin.Web.UI.Controllers
         {
             return View();
         }
+
         [HttpGet]
         public ActionResult Add()
         {
@@ -35,14 +36,14 @@ namespace Admin.Web.UI.Controllers
                     model.SupCategoryId = null;
                 if (!ModelState.IsValid)
                 {
-                    ModelState.AddModelError("CategoryName","100 karakteri gecme kardes.");
+                    ModelState.AddModelError("CategoryName", "100 karakteri gecme kardes.");
                     model.TaxRate *= 100;
                     model.SupCategoryId = model.SupCategoryId ?? 0;
                     ViewBag.CategoryList = GetCategorySelectList();
                     return View(model);
                 }
 
-                if (model.SupCategoryId>0)
+                if (model.SupCategoryId > 0)
                 {
                     model.TaxRate = new CategoryRepo().GetById(model.SupCategoryId).TaxRate;
                 }
@@ -77,35 +78,75 @@ namespace Admin.Web.UI.Controllers
         }
 
         [HttpGet]
-        public ActionResult Update()
+        public ActionResult Update(int id = 0)
         {
-            ViewBag.CategoryList = this.GetCategorySelectList();
-            return View();
+            var data = new CategoryRepo().GetById(id);
+            if (data == null)
+            {
+                TempData["Model"] = new ErrorViewModel()
+                {
+                    Text = $"Kategori Bulunamadı",
+                    ActionName = "Add",
+                    ControllerName = "Category",
+                    ErrorCode = 404
+                };
+                return RedirectToAction("Error", "Home");
+            }
+
+            return View(data);
         }
 
-        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Update(Category Model)
+        [HttpPost]
+        public ActionResult Update(Category model)
         {
             try
             {
-               var category = new CategoryRepo().GetById(Model.Id);
-               if (category == null)
-               {
-                  return RedirectToAction("Update", "Category");
-               }
+                if (model.SupCategoryId == 0) model.SupCategoryId = null;
+                if (!ModelState.IsValid)
+                {
+                    model.SupCategoryId = model.SupCategoryId ?? 0;
+                    ViewBag.CategoryList = GetCategorySelectList();
+                    return View(model);
+                }
 
-               category.CategoryName = Model.CategoryName;
-               category.SupCategoryId = Model.SupCategoryId;
-               category.TaxRate = Model.TaxRate;
-               new CategoryRepo().Update(category);
-               return RedirectToAction("Update", "Category");
+                if (model.SupCategoryId > 0)
+                {
+                    model.TaxRate = new CategoryRepo().GetById(model.SupCategoryId).TaxRate;
+                }
+
+                var data = new CategoryRepo().GetById(model.Id);
+                data.CategoryName = model.CategoryName;
+                data.TaxRate = model.TaxRate;
+                data.SupCategoryId = model.SupCategoryId;
+                new CategoryRepo().Update(data);
+                TempData["Message"] = $"{model.CategoryName} isimli kategori başarıyla güncellenmiştir";
+                ViewBag.CategoryList = GetCategorySelectList();
+                return View(data);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                TempData["Model"] = new ErrorViewModel()
+                {
+                    Text = $"Bir hata oluştu: {EntityHelpers.ValidationMessage(ex)}",
+                    ActionName = "Add",
+                    ControllerName = "Category",
+                    ErrorCode = 500
+                };
+                return RedirectToAction("Error", "Home");
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Update", "Category");
+                TempData["Model"] = new ErrorViewModel()
+                {
+                    Text = $"Bir hata oluştu: {ex.Message}",
+                    ActionName = "Add",
+                    ControllerName = "Category",
+                    ErrorCode = 500
+                };
+                return RedirectToAction("Error", "Home");
             }
-        }
 
+        }
     }
 }
