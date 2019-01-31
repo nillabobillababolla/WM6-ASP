@@ -3,7 +3,9 @@ using Admin.BLL.Repository;
 using Admin.Models.Entities;
 using Admin.Models.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.Linq;
 using System.Web.Mvc;
 
 // ReSharper disable Mvc.ViewNotResolved
@@ -121,6 +123,25 @@ namespace Admin.Web.UI.Controllers
                 data.TaxRate = model.TaxRate;
                 data.SupCategoryId = model.SupCategoryId;
                 new CategoryRepo().Update(data);
+                foreach (var dataCategory in data.Categories)
+                {
+                    dataCategory.TaxRate = data.TaxRate;
+                    new CategoryRepo().Update(dataCategory);
+                    if (dataCategory.Categories.Any())
+                        UpdateSubTaxRate(dataCategory.Categories);
+                }
+
+                void UpdateSubTaxRate(ICollection<Category> dataC)
+                {
+                    foreach (var dataCategory in dataC)
+                    {
+                        dataCategory.TaxRate = data.TaxRate;
+                        new CategoryRepo().Update(dataCategory);
+                        if (dataCategory.Categories.Any())
+                            UpdateSubTaxRate(dataCategory.Categories);
+                    }
+                }
+
                 TempData["Message"] = $"{model.CategoryName} isimli kategori başarıyla güncellenmiştir";
                 ViewBag.CategoryList = GetCategorySelectList();
                 return View(data);

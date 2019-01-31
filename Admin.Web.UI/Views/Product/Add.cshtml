@@ -1,4 +1,5 @@
-﻿@model Product
+﻿@using System.Activities.Statements
+@model Product
 @{
     ViewBag.Title = "Product Add";
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
@@ -32,21 +33,43 @@
                         </div>
                     </div>
 
-                    @*<div class="form-group">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Barcode, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-7">
+                            @Html.TextBoxFor(x => x.Barcode, new { @class = "form-control", placeholder = "Barkod" })
+                            <br /><span class="text-danger">@Html.ValidationMessageFor(x => x.Barcode)</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.BuyPrice, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-7">
+                            @Html.TextBoxFor(x => x.BuyPrice, new { @class = "form-control", type = "number", step = "0.5", placeholder = "Alış Fiyatı" })
+                            <br /><span class="text-danger">@Html.ValidationMessageFor(x => x.BuyPrice)</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.SalesPrice, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-7">
+                            @Html.TextBoxFor(x => x.SalesPrice, new { @class = "form-control", type = "number", step = "0.5", placeholder = "Satış Fiyatı" })
+                            <br /><span class="text-danger">@Html.ValidationMessageFor(x => x.SalesPrice)</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.SupProductId, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-7">
+                            @Html.DropDownListFor(x => x.SupProductId, (List<SelectListItem>)ViewBag.ProductList, new { @class = "form-control", size = "1" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         @Html.LabelFor(x => x.CategoryId, new { @class = "col-md-3 control-label" })
                         <div class="col-md-7">
                             @Html.DropDownListFor(x => x.CategoryId, (List<SelectListItem>)ViewBag.CategoryList, new { @class = "form-control", size = "1" })
                         </div>
-                    </div>*@
-
-                    @*<div class="form-group">
-                        @Html.LabelFor(x => x.SalesPrice, new { @class = "col-md-3 control-label" })
-                        <div class="col-md-7">
-                            @Html.TextBoxFor(x => x.SalesPrice, new { @class = "form-control", placeholder = "Satış Fiyatı", type = "number", step = "1" })
-                            <br /><span class="text-danger">@Html.ValidationMessageFor(x => x.SalesPrice)</span>
-
-                        </div>
-                    </div>*@
+                    </div>
 
                     <div class="form-group m-b-0">
                         <div class="col-md-9 col-md-offset-3">

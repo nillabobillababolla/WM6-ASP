@@ -71,5 +71,67 @@ namespace Admin.Web.UI.Controllers
             return list;
         }
 
+        protected List<SelectListItem> GetProductSelectList()
+        {
+            var products = new ProductRepo()
+                .GetAll(x => x.SupProductId == null)
+                .OrderBy(x => x.ProductName);
+            var list = new List<SelectListItem>()
+            {
+                new SelectListItem()
+                {
+                    Text = "Üst Ürünü Yok",
+                    Value = "0"
+                }
+            };
+            foreach (var product in products)
+            {
+                if (product.Products.Any())
+                {
+                    list.Add(new SelectListItem()
+                    {
+                        Text = product.ProductName,
+                        Value = product.Id.ToString()
+                    });
+                    list.AddRange(GetSubProducts(product.Products.OrderBy(x => x.ProductName).ToList()));
+                }
+                else
+                {
+                    list.Add(new SelectListItem()
+                    {
+                        Text = product.ProductName,
+                        Value = product.Id.ToString()
+                    });
+                }
+            }
+
+            List<SelectListItem> GetSubProducts(List<Product> products2)
+            {
+                var list2 = new List<SelectListItem>();
+                foreach (var product2 in products2)
+                {
+                    if (product2.Products.Any())
+                    {
+                        list2.Add(new SelectListItem()
+                        {
+                            Text = product2.ProductName,
+                            Value = product2.Id.ToString()
+                        });
+                        list2.AddRange(GetSubProducts(product2.Products.OrderBy(x => x.ProductName).ToList()));
+                    }
+                    else
+                    {
+                        list2.Add(new SelectListItem()
+                        {
+                            Text = product2.ProductName,
+                            Value = product2.Id.ToString()
+                        });
+                    }
+                }
+                return list2;
+            }
+
+            return list;
+        }
     }
 }
