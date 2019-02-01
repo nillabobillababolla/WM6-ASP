@@ -8,7 +8,6 @@ using Admin.DAL;
 using Admin.Models.Abstracts;
 
 // ReSharper disable StaticMemberInGenericType
-
 namespace Admin.BLL.Repository
 {
     public abstract class RepositoryBase<T, TId> : IDisposable
