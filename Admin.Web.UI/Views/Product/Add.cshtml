@@ -130,6 +130,7 @@
 @section bottom
 {
     <script src="~/assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
+
     <script>
         $(function() {
             $("#frmSearch").submit(function(e) {
@@ -151,6 +152,7 @@
                     {
                         // settings
                         type: response.success ? "success" : "danger"
+
                     });
                     if (response.data != null) {
                         var data = response.data;

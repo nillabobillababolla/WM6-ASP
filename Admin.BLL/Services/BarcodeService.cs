@@ -2,10 +2,9 @@
 
 namespace Admin.BLL.Services
 {
+    using HtmlAgilityPack;
     using System;
     using System.Linq;
-    using HtmlAgilityPack;
-    using Models;
 
     public class BarcodeService
     {
