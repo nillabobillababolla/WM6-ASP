@@ -50,7 +50,6 @@ namespace Admin.Models.Entities
 
         [StringLength(20)]
         [Required]
-        [Index(IsUnique = true)]
         public string Barcode { get; set; }
 
         [ForeignKey("SupProductId")]
