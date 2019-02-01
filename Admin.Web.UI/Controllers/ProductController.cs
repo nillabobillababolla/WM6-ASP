@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Data.Entity.Validation;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Admin.BLL.Helpers;
 using Admin.BLL.Repository;
+using Admin.BLL.Services;
 using Admin.Models.Entities;
+using Admin.Models.Models;
 using Admin.Models.ViewModels;
 
 namespace Admin.Web.UI.Controllers
@@ -46,7 +49,7 @@ namespace Admin.Web.UI.Controllers
                 {
                     Text = $"Bir hata oluştu: {EntityHelpers.ValidationMessage(ex)}",
                     ActionName = "Add",
-                    ControllerName = "Category",
+                    ControllerName = "Product",
                     ErrorCode = 500
                 };
                 return RedirectToAction("Error", "Home");
@@ -57,11 +60,42 @@ namespace Admin.Web.UI.Controllers
                 {
                     Text = $"Bir hata oluştu: {ex.Message}",
                     ActionName = "Add",
-                    ControllerName = "Category",
+                    ControllerName = "Product",
                     ErrorCode = 500
                 };
                 return RedirectToAction("Error", "Home");
             }
         }
+
+
+        public JsonResult CheckBarcode(string barcode)
+        {
+            try
+            {
+                if (new ProductRepo().Queryable().Any(x => x.Barcode == barcode))
+                {
+                    return Json(new ResponseData()
+                    {
+                        message = $"{barcode} sistemde kayıtlı",
+                        success = true
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new ResponseData()
+                {
+                    message = $"{barcode} bilgisi servisten getirildi",
+                    success = true,
+                    data = new BarcodeService().Get(barcode)
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseData()
+                {
+                    message = $"Bir hata oluştu: {ex.Message}",
+                    success = false
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
+
 }
