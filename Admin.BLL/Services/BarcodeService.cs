@@ -29,7 +29,7 @@ namespace Admin.BLL.Services
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
 
         }

@@ -9,7 +9,7 @@ namespace Admin.DAL
 
         public MyContext() : base("name=MyCon")
         {
-            this.InstanceDate = DateTime.Now;
+            InstanceDate = DateTime.Now;
         }
 
         public DateTime InstanceDate { get; set; }
