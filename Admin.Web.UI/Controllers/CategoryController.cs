@@ -88,9 +88,9 @@ namespace Admin.Web.UI.Controllers
             {
                 TempData["Model"] = new ErrorViewModel()
                 {
-                    Text = $"Kategori Bulunamadı",
+                    Text = $"Ürün Bulunamadı",
                     ActionName = "Add",
-                    ControllerName = "Category",
+                    ControllerName = "Product",
                     ErrorCode = 404
                 };
                 return RedirectToAction("Error", "Home");
