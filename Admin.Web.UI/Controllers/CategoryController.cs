@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace Admin.Web.UI.Controllers
 {
+    [Authorize]
     public class CategoryController : BaseController
     {
         // GET: Category
