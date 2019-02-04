@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Data.Entity;
 using Admin.Models.Entities;
+using Admin.Models.Identity.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Admin.DAL
 {
-    public class MyContext : DbContext
+    public class MyContext : IdentityDbContext<User>
     {
 
         public MyContext() : base("name=MyCon")

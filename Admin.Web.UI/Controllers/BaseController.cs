@@ -6,18 +6,17 @@ using System.Web.Mvc;
 
 namespace Admin.Web.UI.Controllers
 {
-    using System;
-
     using Admin.Models.Enums;
+    using System;
 
     public class BaseController : Controller
     {
         protected List<SelectListItem> GetCategorySelectList()
         {
-            var categories = new CategoryRepo()
+            IOrderedEnumerable<Category> categories = new CategoryRepo()
                 .GetAll(x => x.SupCategoryId == null)
                 .OrderBy(x => x.CategoryName);
-            var list = new List<SelectListItem>()
+            List<SelectListItem> list = new List<SelectListItem>()
             {
                 new SelectListItem()
                 {
@@ -25,7 +24,7 @@ namespace Admin.Web.UI.Controllers
                     Value = "0"
                 }
             };
-            foreach (var category in categories)
+            foreach (Category category in categories)
             {
                 if (category.Categories.Any())
                 {
@@ -48,8 +47,8 @@ namespace Admin.Web.UI.Controllers
 
             List<SelectListItem> GetSubCategories(List<Category> categories2)
             {
-                var list2 = new List<SelectListItem>();
-                foreach (var category in categories2)
+                List<SelectListItem> list2 = new List<SelectListItem>();
+                foreach (Category category in categories2)
                 {
                     if (category.Categories.Any())
                     {
@@ -77,10 +76,10 @@ namespace Admin.Web.UI.Controllers
 
         protected List<SelectListItem> GetProductSelectList()
         {
-            var products = new ProductRepo()
+            IOrderedEnumerable<Product> products = new ProductRepo()
                 .GetAll(x => x.SupProductId == null && x.ProductType == ProductTypes.Retail)
                 .OrderBy(x => x.ProductName);
-            var list = new List<SelectListItem>()
+            List<SelectListItem> list = new List<SelectListItem>()
             {
                 new SelectListItem()
                 {
@@ -88,7 +87,7 @@ namespace Admin.Web.UI.Controllers
                     Value = new Guid().ToString()
                 }
             };
-            foreach (var product in products)
+            foreach (Product product in products)
             {
                 if (product.Products.Any(x => x.ProductType == ProductTypes.Retail))
                 {
@@ -111,8 +110,8 @@ namespace Admin.Web.UI.Controllers
 
             List<SelectListItem> GetSubProducts(List<Product> products2)
             {
-                var list2 = new List<SelectListItem>();
-                foreach (var product2 in products2)
+                List<SelectListItem> list2 = new List<SelectListItem>();
+                foreach (Product product2 in products2)
                 {
                     if (product2.Products.Any(x => x.ProductType == ProductTypes.Retail))
                     {
