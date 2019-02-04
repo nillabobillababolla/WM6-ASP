@@ -8,13 +8,12 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web.Mvc;
 
-// ReSharper disable Mvc.ViewNotResolved
 
 namespace Admin.Web.UI.Controllers
 {
     public class CategoryController : BaseController
     {
-        // GET: Category
+        [HttpGet]
         public ActionResult Index()
         {
             return View();
@@ -35,7 +34,10 @@ namespace Admin.Web.UI.Controllers
             {
                 model.TaxRate /= 100;
                 if (model.SupCategoryId == 0)
+                {
                     model.SupCategoryId = null;
+                }
+
                 if (!ModelState.IsValid)
                 {
                     ModelState.AddModelError("CategoryName", "100 karakteri gecme kardes.");
@@ -105,7 +107,11 @@ namespace Admin.Web.UI.Controllers
         {
             try
             {
-                if (model.SupCategoryId == 0) model.SupCategoryId = null;
+                if (model.SupCategoryId == 0)
+                {
+                    model.SupCategoryId = null;
+                }
+
                 if (!ModelState.IsValid)
                 {
                     model.SupCategoryId = model.SupCategoryId ?? 0;
@@ -128,7 +134,9 @@ namespace Admin.Web.UI.Controllers
                     dataCategory.TaxRate = data.TaxRate;
                     new CategoryRepo().Update(dataCategory);
                     if (dataCategory.Categories.Any())
+                    {
                         UpdateSubTaxRate(dataCategory.Categories);
+                    }
                 }
 
                 void UpdateSubTaxRate(ICollection<Category> dataC)
@@ -138,7 +146,9 @@ namespace Admin.Web.UI.Controllers
                         dataCategory.TaxRate = data.TaxRate;
                         new CategoryRepo().Update(dataCategory);
                         if (dataCategory.Categories.Any())
+                        {
                             UpdateSubTaxRate(dataCategory.Categories);
+                        }
                     }
                 }
 
@@ -170,8 +180,6 @@ namespace Admin.Web.UI.Controllers
             }
 
         }
-
-
 
     }
 }
