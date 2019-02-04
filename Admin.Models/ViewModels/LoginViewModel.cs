@@ -6,7 +6,7 @@ namespace Admin.Models.ViewModels
     {
         [Required]
         [Display(Name = "Kullanıcı Adı")]
-        public string Username { get; set; }
+        public string UserName { get; set; }
         [StringLength(100, MinimumLength = 5, ErrorMessage = "Şifreniz en az 5 karakter olmalıdır!")]
         [Display(Name = "Şifre")]
         [DataType(DataType.Password)]

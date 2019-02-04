@@ -14,7 +14,7 @@ namespace Admin.Models.ViewModels
         public string Surname { get; set; }
         [Required]
         [Display(Name = "Kullanıcı Adı")]
-        public string Username { get; set; }
+        public string UserName { get; set; }
         [Required]
         [EmailAddress]
         public string Email { get; set; }
