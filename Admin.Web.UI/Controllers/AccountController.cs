@@ -96,17 +96,19 @@ namespace Admin.Web.UI.Controllers
             try
             {
                 if (!ModelState.IsValid)
+                {
                     return View("Index", model);
+                }
 
-                var userManager = NewUserManager();
-                var user = await userManager.FindAsync(model.LoginViewModel.UserName, model.LoginViewModel.Password);
+                UserManager<User> userManager = NewUserManager();
+                User user = await userManager.FindAsync(model.LoginViewModel.UserName, model.LoginViewModel.Password);
                 if (user == null)
                 {
                     ModelState.AddModelError("", "Kullanıcı adı veya şifre hatalı");
                     return View("Index", model);
                 }
-                var authManager = HttpContext.GetOwinContext().Authentication;
-                var userIdentity =
+                IAuthenticationManager authManager = HttpContext.GetOwinContext().Authentication;
+                System.Security.Claims.ClaimsIdentity userIdentity =
                     await userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
                 authManager.SignIn(new AuthenticationProperties()
                 {
@@ -130,7 +132,7 @@ namespace Admin.Web.UI.Controllers
         [HttpGet]
         public ActionResult Logout()
         {
-            Microsoft.Owin.Security.IAuthenticationManager authManager = HttpContext.GetOwinContext().Authentication;
+            IAuthenticationManager authManager = HttpContext.GetOwinContext().Authentication;
             authManager.SignOut();
             return RedirectToAction("Index");
         }
