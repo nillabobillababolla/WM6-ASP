@@ -7,8 +7,8 @@ namespace Admin.Web.UI.Controllers
     {
         public PartialViewResult DrawerPartial()
         {
-            var data = new List<string>();
-            return PartialView("Partial/_DrawerPartial",data);
+            List<string> data = new List<string>();
+            return PartialView("Partial/_DrawerPartial", data);
         }
         public PartialViewResult HeaderPartial()
         {

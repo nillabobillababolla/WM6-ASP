@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Admin.Models.Entities;
+using Admin.Models.Identity.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Data.Entity;
-using Admin.Models.Entities;
 
 namespace Admin.DAL
 {
-    public class MyContext : DbContext
+    public class MyContext : IdentityDbContext<User>
     {
 
         public MyContext() : base("name=MyCon")
@@ -13,6 +15,7 @@ namespace Admin.DAL
         }
 
         public DateTime InstanceDate { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
