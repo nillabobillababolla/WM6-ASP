@@ -151,6 +151,10 @@
       <Project>{2DFEBD0A-CDE1-414B-9755-6115B13766E8}</Project>
       <Name>Admin.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MyWebSite.BLL\MyWebSite.BLL.csproj">
+      <Project>{802BC0BA-A152-4B16-A98E-CDEA7A0F428D}</Project>
+      <Name>MyWebSite.BLL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MyWebSite.DAL\MyWebSite.DAL.csproj">
       <Project>{9D7054B3-EB06-4843-8A04-C5E9A7BE8F83}</Project>
       <Name>MyWebSite.DAL</Name>
