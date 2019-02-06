@@ -3,12 +3,13 @@ using Admin.Models.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Admin.Models.Enums;
+using System;
 
 namespace Admin.Web.UI.Controllers
 {
-    using Admin.Models.Enums;
-    using System;
-
+   
+    [Authorize]
     public class BaseController : Controller
     {
         protected List<SelectListItem> GetCategorySelectList()

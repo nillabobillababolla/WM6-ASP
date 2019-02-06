@@ -8,20 +8,19 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web.Mvc;
 
-// ReSharper disable Mvc.ViewNotResolved
 
 namespace Admin.Web.UI.Controllers
 {
-    [Authorize]
     public class CategoryController : BaseController
     {
-        // GET: Category
+        [HttpGet]
         public ActionResult Index()
         {
             return View();
         }
 
         [HttpGet]
+        [Authorize(Roles ="Admin")]
         public ActionResult Add()
         {
             ViewBag.CategoryList = GetCategorySelectList();
