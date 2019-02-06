@@ -1,5 +1,5 @@
 ﻿using Admin.Models.Entities;
-using Admin.Models.Identity.Models;
+using Admin.Models.IdentityModels;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Data.Entity;
@@ -9,7 +9,7 @@ namespace Admin.DAL
     public class MyContext : IdentityDbContext<User>
     {
 
-        public MyContext() : base("name=MyCon")
+        public MyContext() : base("MyCon")
         {
             InstanceDate = DateTime.Now;
         }
