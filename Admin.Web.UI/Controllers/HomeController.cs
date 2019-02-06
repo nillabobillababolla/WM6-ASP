@@ -4,7 +4,7 @@ namespace Admin.Web.UI.Controllers
 {
     public class HomeController : BaseController
     {
-        [HttpGet]
+        // GET: Home
         public ActionResult Index()
         {
             return View();
@@ -12,8 +12,8 @@ namespace Admin.Web.UI.Controllers
 
         public ActionResult Error()
         {
+
             return View();
         }
-
     }
 }

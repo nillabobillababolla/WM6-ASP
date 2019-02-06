@@ -1,23 +1,22 @@
 ﻿using Admin.BLL.Repository;
 using Admin.Models.Entities;
+using Admin.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Admin.Models.Enums;
-using System;
 
 namespace Admin.Web.UI.Controllers
 {
-   
     [Authorize]
     public class BaseController : Controller
     {
         protected List<SelectListItem> GetCategorySelectList()
         {
-            IOrderedEnumerable<Category> categories = new CategoryRepo()
+            var categories = new CategoryRepo()
                 .GetAll(x => x.SupCategoryId == null)
                 .OrderBy(x => x.CategoryName);
-            List<SelectListItem> list = new List<SelectListItem>()
+            var list = new List<SelectListItem>()
             {
                 new SelectListItem()
                 {
@@ -25,7 +24,7 @@ namespace Admin.Web.UI.Controllers
                     Value = "0"
                 }
             };
-            foreach (Category category in categories)
+            foreach (var category in categories)
             {
                 if (category.Categories.Any())
                 {
@@ -48,8 +47,8 @@ namespace Admin.Web.UI.Controllers
 
             List<SelectListItem> GetSubCategories(List<Category> categories2)
             {
-                List<SelectListItem> list2 = new List<SelectListItem>();
-                foreach (Category category in categories2)
+                var list2 = new List<SelectListItem>();
+                foreach (var category in categories2)
                 {
                     if (category.Categories.Any())
                     {
@@ -77,10 +76,10 @@ namespace Admin.Web.UI.Controllers
 
         protected List<SelectListItem> GetProductSelectList()
         {
-            IOrderedEnumerable<Product> products = new ProductRepo()
+            var products = new ProductRepo()
                 .GetAll(x => x.SupProductId == null && x.ProductType == ProductTypes.Retail)
                 .OrderBy(x => x.ProductName);
-            List<SelectListItem> list = new List<SelectListItem>()
+            var list = new List<SelectListItem>()
             {
                 new SelectListItem()
                 {
@@ -88,7 +87,7 @@ namespace Admin.Web.UI.Controllers
                     Value = new Guid().ToString()
                 }
             };
-            foreach (Product product in products)
+            foreach (var product in products)
             {
                 if (product.Products.Any(x => x.ProductType == ProductTypes.Retail))
                 {
@@ -111,24 +110,24 @@ namespace Admin.Web.UI.Controllers
 
             List<SelectListItem> GetSubProducts(List<Product> products2)
             {
-                List<SelectListItem> list2 = new List<SelectListItem>();
-                foreach (Product product2 in products2)
+                var list2 = new List<SelectListItem>();
+                foreach (var product in products2)
                 {
-                    if (product2.Products.Any(x => x.ProductType == ProductTypes.Retail))
+                    if (product.Products.Any(x => x.ProductType == ProductTypes.Retail))
                     {
                         list2.Add(new SelectListItem()
                         {
-                            Text = product2.ProductName,
-                            Value = product2.Id.ToString()
+                            Text = product.ProductName,
+                            Value = product.Id.ToString()
                         });
-                        list2.AddRange(GetSubProducts(product2.Products.Where(x => x.ProductType == ProductTypes.Retail).OrderBy(x => x.ProductName).ToList()));
+                        list2.AddRange(GetSubProducts(product.Products.Where(x => x.ProductType == ProductTypes.Retail).OrderBy(x => x.ProductName).ToList()));
                     }
                     else
                     {
                         list2.Add(new SelectListItem()
                         {
-                            Text = product2.ProductName,
-                            Value = product2.Id.ToString()
+                            Text = product.ProductName,
+                            Value = product.Id.ToString()
                         });
                     }
                 }

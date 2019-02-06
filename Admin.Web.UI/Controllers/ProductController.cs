@@ -14,8 +14,14 @@ namespace Admin.Web.UI.Controllers
 {
     public class ProductController : BaseController
     {
+        // GET: Product
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         [HttpGet]
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Add()
         {
             ViewBag.ProductList = GetProductSelectList();
@@ -70,8 +76,7 @@ namespace Admin.Web.UI.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }
-
-
+        [HttpGet]
         public JsonResult CheckBarcode(string barcode)
         {
             try
@@ -100,81 +105,5 @@ namespace Admin.Web.UI.Controllers
                 }, JsonRequestBehavior.AllowGet);
             }
         }
-
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public ActionResult Update(Guid id = default(Guid))
-        {
-            try
-            {
-                ViewBag.ProductList = GetProductSelectList();
-                var data = new ProductRepo().GetById(id);
-                if (data == null)
-                {
-                    TempData["Model"] = new ErrorViewModel()
-                    {
-                        Text = $"Ürün Bulunamadı",
-                        ActionName = "Update",
-                        ControllerName = "Product",
-                        ErrorCode = 404
-                    };
-                    return RedirectToAction("Error", "Home");
-                }
-                return View(data);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        [ValidateAntiForgeryToken]
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public ActionResult Update(Product model)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    ViewBag.ProductList = GetProductSelectList();
-                    return View(model);
-                }
-
-                var data = new ProductRepo().GetById(model.Id);
-                data.ProductName = model.ProductName;
-                data.SalesPrice = model.SalesPrice;
-                data.SupProductId = model.SupProductId;
-                new ProductRepo().Update(data);
-
-                TempData["Message"] = $"{model.ProductName} isimli ürün başarıyla güncellenmiştir";
-                ViewBag.CategoryList = GetCategorySelectList();
-                return View(data);
-            }
-            catch (DbEntityValidationException ex)
-            {
-                TempData["Model"] = new ErrorViewModel()
-                {
-                    Text = $"Bir hata oluştu: {EntityHelpers.ValidationMessage(ex)}",
-                    ActionName = "Update",
-                    ControllerName = "Product",
-                    ErrorCode = 500
-                };
-                return RedirectToAction("Error", "Home");
-            }
-
-            catch (Exception ex)
-            {
-                TempData["Model"] = new ErrorViewModel()
-                {
-                    Text = $"Bir hata oluştu:{ex.Message}",
-                    ActionName = "Update",
-                    ControllerName = "Product",
-                    ErrorCode = 500
-                };
-                return RedirectToAction("Error", "Home");
-            }
-        }
     }
-
 }

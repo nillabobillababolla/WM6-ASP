@@ -1,45 +1,42 @@
-﻿using Admin.BLL.Helpers;
-using Admin.BLL.Repository;
-using Admin.Models.Entities;
-using Admin.Models.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using Admin.BLL.Repository;
 using System.Linq;
 using System.Web.Mvc;
-
+using Admin.BLL.Helpers;
+using Admin.Models.Entities;
+using Admin.Models.ViewModels;
 
 namespace Admin.Web.UI.Controllers
 {
     public class CategoryController : BaseController
     {
-        [HttpGet]
+        // GET: Category
         public ActionResult Index()
         {
             return View();
         }
-
         [HttpGet]
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Add()
         {
             ViewBag.CategoryList = GetCategorySelectList();
+
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken] // Fishing yöntemine karşı siteyi koruma.
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Add(Category model)
         {
             try
             {
-                model.TaxRate /= 100;
-                if (model.SupCategoryId == 0)
-                    model.SupCategoryId = null;
+                if (model.SupCategoryId == 0) model.SupCategoryId = null;
                 if (!ModelState.IsValid)
                 {
-                    ModelState.AddModelError("CategoryName", "100 karakteri gecme kardes.");
-                    model.TaxRate *= 100;
+                    ModelState.AddModelError("CategoryName", "100 karakteri geçme kardeş");
                     model.SupCategoryId = model.SupCategoryId ?? 0;
                     ViewBag.CategoryList = GetCategorySelectList();
                     return View(model);
@@ -49,16 +46,15 @@ namespace Admin.Web.UI.Controllers
                 {
                     model.TaxRate = new CategoryRepo().GetById(model.SupCategoryId).TaxRate;
                 }
-
                 new CategoryRepo().Insert(model);
-                TempData["Message"] = $"{model.CategoryName} isimli kategori basariyla eklendi.";
-                return RedirectToAction("Add", "Category");
+                TempData["Message"] = $"{model.CategoryName} isimli kategori başarıyla eklenmiştir";
+                return RedirectToAction("Add");
             }
             catch (DbEntityValidationException ex)
             {
                 TempData["Model"] = new ErrorViewModel()
                 {
-                    Text = $"Bir hata olustu. {EntityHelpers.ValidationMessage(ex)}",
+                    Text = $"Bir hata oluştu: {EntityHelpers.ValidationMessage(ex)}",
                     ActionName = "Add",
                     ControllerName = "Category",
                     ErrorCode = 500
@@ -69,17 +65,17 @@ namespace Admin.Web.UI.Controllers
             {
                 TempData["Model"] = new ErrorViewModel()
                 {
-                    Text = $"Bir hata olustu. {ex.Message}",
+                    Text = $"Bir hata oluştu: {ex.Message}",
                     ActionName = "Add",
                     ControllerName = "Category",
                     ErrorCode = 500
                 };
                 return RedirectToAction("Error", "Home");
             }
-
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult Update(int id = 0)
         {
             ViewBag.CategoryList = GetCategorySelectList();
@@ -88,9 +84,9 @@ namespace Admin.Web.UI.Controllers
             {
                 TempData["Model"] = new ErrorViewModel()
                 {
-                    Text = $"Ürün Bulunamadı",
+                    Text = $"Kategori Bulunamadı",
                     ActionName = "Add",
-                    ControllerName = "Product",
+                    ControllerName = "Category",
                     ErrorCode = 404
                 };
                 return RedirectToAction("Error", "Home");
@@ -101,6 +97,7 @@ namespace Admin.Web.UI.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult Update(Category model)
         {
             try
@@ -117,7 +114,6 @@ namespace Admin.Web.UI.Controllers
                 {
                     model.TaxRate = new CategoryRepo().GetById(model.SupCategoryId).TaxRate;
                 }
-
                 var data = new CategoryRepo().GetById(model.Id);
                 data.CategoryName = model.CategoryName;
                 data.TaxRate = model.TaxRate;
@@ -127,7 +123,7 @@ namespace Admin.Web.UI.Controllers
                 {
                     dataCategory.TaxRate = data.TaxRate;
                     new CategoryRepo().Update(dataCategory);
-                    if (dataCategory.Categories.Any())
+                    if(dataCategory.Categories.Any())
                         UpdateSubTaxRate(dataCategory.Categories);
                 }
 
@@ -141,7 +137,6 @@ namespace Admin.Web.UI.Controllers
                             UpdateSubTaxRate(dataCategory.Categories);
                     }
                 }
-
                 TempData["Message"] = $"{model.CategoryName} isimli kategori başarıyla güncellenmiştir";
                 ViewBag.CategoryList = GetCategorySelectList();
                 return View(data);
@@ -168,10 +163,7 @@ namespace Admin.Web.UI.Controllers
                 };
                 return RedirectToAction("Error", "Home");
             }
-
         }
-
-
 
     }
 }
