@@ -51,7 +51,8 @@ namespace Admin.Web.UI.Controllers
                     UserName = rm.UserName,
                     Surname = rm.Surname
                 };
-                Microsoft.AspNet.Identity.IdentityResult result = await userManager.CreateAsync(newUser, rm.Password);
+
+                IdentityResult result = await userManager.CreateAsync(newUser, rm.Password);
                 if (result.Succeeded)
                 {
                     if (userStore.Users.Count() == 1)

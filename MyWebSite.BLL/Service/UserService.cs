@@ -16,5 +16,10 @@ namespace MyWebSite.BLL.Service
         {
             return _userRepository.AddItem(item);
         }
+        public int UpdateUser(User item)
+        {
+            return _userRepository.UpdateItem(item);
+        }
+
     }
 }
