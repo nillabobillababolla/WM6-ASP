@@ -14,7 +14,7 @@ namespace Admin.Web.UI.Controllers
 {
     public class ProductController : BaseController
     {
-        // GET: Product
+        [HttpGet]
         public ActionResult Index()
         {
             return View();

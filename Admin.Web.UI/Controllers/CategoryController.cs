@@ -12,7 +12,7 @@ namespace Admin.Web.UI.Controllers
 {
     public class CategoryController : BaseController
     {
-        // GET: Category
+        [HttpGet]
         public ActionResult Index()
         {
             return View();
