@@ -11,7 +11,7 @@ namespace Admin.BLL.Services.Senders
 {
     public class EmailService : IMessageService
     {
-        private readonly string _userId = HttpContext.Current.User.Identity.GetUserId();
+        private string _userId = HttpContext.Current.User.Identity.GetUserId();
         public string[] Cc { get; set; }
         public string[] Bcc { get; set; }
         public string FilePath { get; set; }
@@ -23,17 +23,17 @@ namespace Admin.BLL.Services.Senders
 
         public EmailService()
         {
-            SenderMail = "wissenakademie.wm6@gmail.com";
-            Password = "qweqweasdasd123";
-            Smtp = "smtp.gmail.com";
-            SmtpPort = 587;
+            this.SenderMail = "wissenakademie.wm6@gmail.com";
+            this.Password = "qweqweasdasd123";
+            this.Smtp = "smtp.gmail.com";
+            this.SmtpPort = 587;
         }
         public EmailService(string senderMail, string password, string smtp, int smtpPort)
         {
-            SenderMail = senderMail;
-            Password = password;
-            Smtp = smtp;
-            SmtpPort = smtpPort;
+            this.SenderMail = senderMail;
+            this.Password = password;
+            this.Smtp = smtp;
+            this.SmtpPort = smtpPort;
         }
 
         public async Task SendAsync(IdentityMessage message, params string[] contacts)
@@ -41,7 +41,7 @@ namespace Admin.BLL.Services.Senders
             var userID = _userId ?? "system";
             try
             {
-                var mail = new MailMessage { From = new MailAddress(SenderMail) };
+                var mail = new MailMessage { From = new MailAddress(this.SenderMail) };
                 if (!string.IsNullOrEmpty(FilePath))
                 {
                     mail.Attachments.Add(new Attachment(FilePath));
@@ -73,15 +73,15 @@ namespace Admin.BLL.Services.Senders
                 mail.SubjectEncoding = Encoding.UTF8;
                 mail.HeadersEncoding = Encoding.UTF8;
 
-                var smptClient = new SmtpClient(Smtp, SmtpPort)
+                var smptClient = new SmtpClient(this.Smtp, this.SmtpPort)
                 {
-                    Credentials = new NetworkCredential(SenderMail, Password),
+                    Credentials = new NetworkCredential(this.SenderMail, this.Password),
                     EnableSsl = true
                 };
                 await smptClient.SendMailAsync(mail);
                 MessageState = MessageStates.Delivered;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 MessageState = MessageStates.NotDelivered;
             }
@@ -92,7 +92,7 @@ namespace Admin.BLL.Services.Senders
         {
             Task.Run(async () =>
             {
-                await SendAsync(message, contacts);
+                await this.SendAsync(message, contacts);
             });
         }
     }

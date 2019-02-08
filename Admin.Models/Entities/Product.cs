@@ -47,6 +47,7 @@ namespace Admin.Models.Entities
 
         [DisplayName("Üst Ürün Adı")]
         public Guid? SupProductId { get; set; }
+        public string AvatarPath { get; set; }
 
         [StringLength(20)]
         [Required]

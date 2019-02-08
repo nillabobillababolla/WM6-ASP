@@ -6,8 +6,10 @@ using Admin.Models.Models;
 using Admin.Models.ViewModels;
 using System;
 using System.Data.Entity.Validation;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace Admin.Web.UI.Controllers
@@ -29,28 +31,69 @@ namespace Admin.Web.UI.Controllers
             return View();
         }
 
-        [ValidateAntiForgeryToken]
+       [ValidateAntiForgeryToken]
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Add(Product model)
+        public async Task<ActionResult> Add(AddProductViewModel prd)
         {
             if (!ModelState.IsValid)
             {
                 ViewBag.ProductList = GetProductSelectList();
                 ViewBag.CategoryList = GetCategorySelectList();
-                return View(model);
+                return View(prd);
             }
 
             try
             {
-                if (model.SupProductId.ToString().Replace("0", "").Replace("-", "").Length == 0)
-                {
-                    model.SupProductId = null;
-                }
+                if (prd.Product.SupProductId.ToString().Replace("0", "").Replace("-", "").Length == 0)
+                    prd.Product.SupProductId = null;
 
-                model.LastPriceUpdateDate = DateTime.Now;
+                prd.Product.LastPriceUpdateDate = DateTime.Now;
+                Product model = new Product()
+                {
+                    Category = prd.Product.Category,
+                    Description = prd.Product.Description,
+                    ProductName = prd.Product.ProductName,
+                    SalesPrice = prd.Product.SalesPrice,
+                    BuyPrice = prd.Product.BuyPrice,
+                    Id = prd.Product.Id,
+                    AvatarPath = prd.Product.AvatarPath,
+                    Barcode = prd.Product.Barcode,
+                    CreatedDate = prd.Product.CreatedDate,
+                    Invoices = prd.Product.Invoices,
+                    LastPriceUpdateDate = prd.Product.LastPriceUpdateDate,
+                    ProductType = prd.Product.ProductType,
+                    Products = prd.Product.Products,
+                    Quantity = prd.Product.Quantity,
+                    SupProduct = prd.Product.SupProduct,
+                    SupProductId = prd.Product.SupProductId,
+                    UnitsInStock = prd.Product.UnitsInStock,
+                    UpdatedDate = prd.Product.UpdatedDate
+                };
+                model.CategoryId = prd.Product.CategoryId;
+                if (prd.PostedFile != null &&
+                    prd.PostedFile.ContentLength > 0)
+                {
+                    var file = prd.PostedFile;
+                    string fileName = Path.GetFileNameWithoutExtension(file.FileName);
+                    string extName = Path.GetExtension(file.FileName);
+                    fileName = StringHelpers.UrlFormatConverter(fileName);
+                    fileName += StringHelpers.GetCode();
+                    var klasoryolu = Server.MapPath("~/Upload/");
+                    var dosyayolu = Server.MapPath("~/Upload/") + fileName + extName;
+
+                    if (!Directory.Exists(klasoryolu))
+                        Directory.CreateDirectory(klasoryolu);
+                    file.SaveAs(dosyayolu);
+
+                    WebImage img = new WebImage(dosyayolu);
+                    img.Resize(250, 250, false);
+                    img.AddTextWatermark("Wissen");
+                    img.Save(dosyayolu);
+                    model.AvatarPath = "/Upload/" + fileName + extName;
+                }
                 await new ProductRepo().InsertAsync(model);
-                TempData["Message"] = $"{model.ProductName} isimli ürün başarıyla eklenmiştir";
+                TempData["Message"] = $"{prd.Product.ProductName} isimli ürün başarıyla eklenmiştir";
                 return RedirectToAction("Add");
             }
             catch (DbEntityValidationException ex)

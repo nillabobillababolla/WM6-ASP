@@ -1,8 +1,11 @@
 ﻿using Admin.BLL.Helpers;
+using Admin.BLL.Identity;
 using Admin.BLL.Services.Senders;
 using Admin.Models.IdentityModels;
 using Admin.Models.ViewModels;
+using Admin.Web.UI.Helpers;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
 using System.IO;
@@ -15,11 +18,13 @@ using static Admin.BLL.Identity.MembershipTools;
 
 namespace Admin.Web.UI.Controllers
 {
+    [RequireHttps]
     public class AccountController : Controller
     {
-        [HttpGet]
+        // GET: Account
         public ActionResult Index()
         {
+            //HttpContext.User.Identity.GetUserId();
             if (HttpContext.GetOwinContext().Authentication.User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
@@ -38,19 +43,19 @@ namespace Admin.Web.UI.Controllers
             }
             try
             {
-                Microsoft.AspNet.Identity.EntityFramework.UserStore<User> userStore = NewUserStore();
-                UserManager<User> userManager = NewUserManager();
+                var userStore = NewUserStore();
+                var userManager = NewUserManager();
 
-                RegisterViewModel rm = model.RegisterViewModel;
+                var rm = model.RegisterViewModel;
 
-                User user = await userManager.FindByNameAsync(rm.UserName);
+                var user = await userManager.FindByNameAsync(rm.UserName);
                 if (user != null)
                 {
                     ModelState.AddModelError("UserName", "Bu kullanıcı adı daha önceden alınmıştır");
                     return View("Index", model);
                 }
 
-                User newUser = new User()
+                var newUser = new User()
                 {
                     UserName = rm.UserName,
                     Email = rm.Email,
@@ -58,7 +63,7 @@ namespace Admin.Web.UI.Controllers
                     Surname = rm.Surname,
                     ActivationCode = StringHelpers.GetCode()
                 };
-                IdentityResult result = await userManager.CreateAsync(newUser, rm.Password);
+                var result = await userManager.CreateAsync(newUser, rm.Password);
                 if (result.Succeeded)
                 {
                     if (userStore.Users.Count() == 1)
@@ -73,14 +78,14 @@ namespace Admin.Web.UI.Controllers
                     string SiteUrl = Request.Url.Scheme + System.Uri.SchemeDelimiter + Request.Url.Host +
                                      (Request.Url.IsDefaultPort ? "" : ":" + Request.Url.Port);
 
-                    EmailService emailService = new EmailService();
-                    string body = $"Merhaba <b>{newUser.Name} {newUser.Surname}</b><br>Hesabınızı aktif etmek için aşadıdaki linke tıklayınız<br> <a href='{SiteUrl}/account/activation?code={newUser.ActivationCode}' >Aktivasyon Linki </a> ";
+                    var emailService = new EmailService();
+                    var body = $"Merhaba <b>{newUser.Name} {newUser.Surname}</b><br>Hesabınızı aktif etmek için aşadıdaki linke tıklayınız<br> <a href='{SiteUrl}/account/activation?code={newUser.ActivationCode}' >Aktivasyon Linki </a> ";
                     await emailService.SendAsync(new IdentityMessage() { Body = body, Subject = "Sitemize Hoşgeldiniz" }, newUser.Email);
                 }
                 else
                 {
-                    string err = "";
-                    foreach (string resultError in result.Errors)
+                    var err = "";
+                    foreach (var resultError in result.Errors)
                     {
                         err += resultError + " ";
                     }
@@ -115,15 +120,15 @@ namespace Admin.Web.UI.Controllers
                     return View("Index", model);
                 }
 
-                UserManager<User> userManager = NewUserManager();
-                User user = await userManager.FindAsync(model.LoginViewModel.UserName, model.LoginViewModel.Password);
+                var userManager = NewUserManager();
+                var user = await userManager.FindAsync(model.LoginViewModel.UserName, model.LoginViewModel.Password);
                 if (user == null)
                 {
                     ModelState.AddModelError("", "Kullanıcı adı veya şifre hatalı");
                     return View("Index", model);
                 }
-                IAuthenticationManager authManager = HttpContext.GetOwinContext().Authentication;
-                System.Security.Claims.ClaimsIdentity userIdentity =
+                var authManager = HttpContext.GetOwinContext().Authentication;
+                var userIdentity =
                     await userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
                 authManager.SignIn(new AuthenticationProperties()
                 {
@@ -147,7 +152,7 @@ namespace Admin.Web.UI.Controllers
         [HttpGet]
         public ActionResult Logout()
         {
-            IAuthenticationManager authManager = HttpContext.GetOwinContext().Authentication;
+            var authManager = HttpContext.GetOwinContext().Authentication;
             authManager.SignOut();
             return RedirectToAction("Index", "Account");
         }
@@ -158,9 +163,9 @@ namespace Admin.Web.UI.Controllers
         {
             try
             {
-                string id = HttpContext.GetOwinContext().Authentication.User.Identity.GetUserId();
-                User user = NewUserManager().FindById(id);
-                ProfilePasswordViewModel data = new ProfilePasswordViewModel()
+                var id = HttpContext.GetOwinContext().Authentication.User.Identity.GetUserId();
+                var user = NewUserManager().FindById(id);
+                var data = new ProfilePasswordViewModel()
                 {
                     UserProfileViewModel = new UserProfileViewModel()
                     {
@@ -224,7 +229,10 @@ namespace Admin.Web.UI.Controllers
                     var dosyayolu = Server.MapPath("~/Upload/") + fileName + extName;
 
                     if (!Directory.Exists(klasoryolu))
+                    {
                         Directory.CreateDirectory(klasoryolu);
+                    }
+
                     file.SaveAs(dosyayolu);
 
                     WebImage img = new WebImage(dosyayolu);
@@ -259,10 +267,10 @@ namespace Admin.Web.UI.Controllers
         {
             try
             {
-                UserManager<User> userManager = NewUserManager();
-                string id = HttpContext.GetOwinContext().Authentication.User.Identity.GetUserId();
-                User user = NewUserManager().FindById(id);
-                ProfilePasswordViewModel data = new ProfilePasswordViewModel()
+                var userManager = NewUserManager();
+                var id = HttpContext.GetOwinContext().Authentication.User.Identity.GetUserId();
+                var user = NewUserManager().FindById(id);
+                var data = new ProfilePasswordViewModel()
                 {
                     UserProfileViewModel = new UserProfileViewModel()
                     {
@@ -282,7 +290,7 @@ namespace Admin.Web.UI.Controllers
                 }
 
 
-                IdentityResult result = await userManager.ChangePasswordAsync(
+                var result = await userManager.ChangePasswordAsync(
                     HttpContext.GetOwinContext().Authentication.User.Identity.GetUserId(),
                     model.ChangePasswordViewModel.OldPassword, model.ChangePasswordViewModel.NewPassword);
 
@@ -293,8 +301,8 @@ namespace Admin.Web.UI.Controllers
                 }
                 else
                 {
-                    string err = "";
-                    foreach (string resultError in result.Errors)
+                    var err = "";
+                    foreach (var resultError in result.Errors)
                     {
                         err += resultError + " ";
                     }
@@ -322,8 +330,8 @@ namespace Admin.Web.UI.Controllers
         {
             try
             {
-                Microsoft.AspNet.Identity.EntityFramework.UserStore<User> userStore = NewUserStore();
-                User user = userStore.Users.FirstOrDefault(x => x.ActivationCode == code);
+                var userStore = NewUserStore();
+                var user = userStore.Users.FirstOrDefault(x => x.ActivationCode == code);
 
                 if (user != null)
                 {
@@ -351,6 +359,7 @@ namespace Admin.Web.UI.Controllers
 
             return View();
         }
+
         [HttpGet]
         [AllowAnonymous]
         public ActionResult RecoverPassword()
@@ -408,6 +417,51 @@ namespace Admin.Web.UI.Controllers
             return View();
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ExternalLogin(string provider, string returnUrl)
+        {
+            Session["provider"] = provider;
+            Session["returnUrl"] = returnUrl;
+            return new ChallengeResult(provider, returnUrl);
+        }
+        [AllowAnonymous]
+        public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
+        {
 
+            var loginInfo = await HttpContext.GetOwinContext().Authentication.GetExternalLoginInfoAsync();
+
+            if (loginInfo == null)
+            {
+                return Redirect("/account");
+            }
+
+            var authManager = HttpContext.GetOwinContext().Authentication;
+            var userManager = MembershipTools.NewUserManager();
+            var signInManager = new SignInManager<User, string>(userManager, authManager);
+
+            var status = await signInManager.ExternalSignInAsync(loginInfo, true);
+            switch (status)
+            {
+                case SignInStatus.Success:
+                    if (string.IsNullOrEmpty(returnUrl))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        return Redirect(returnUrl);
+                    }
+
+                case SignInStatus.Failure:
+                    //ilk defa gelen kişi kayıt yönergelerini tamamlatacağız
+                    ViewBag.ReturnUrl = returnUrl;
+                    ViewBag.Message = "Kayıt işleminizi tamamlayın";
+                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel() { Email = loginInfo.Email, UserName = loginInfo.DefaultUserName.ToLower().Replace(" ", "") });
+            }
+
+            return Redirect("/");
+        }
     }
 }

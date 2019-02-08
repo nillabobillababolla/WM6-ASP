@@ -81,18 +81,13 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                             <div class="md-form">
-                            <div class="file-field">
-                                <div class="btn btn-primary btn-xs float-left">
-                                        @Html.LabelFor(x => x.UserProfileViewModel.PostedFile)
-                                        @Html.TextBoxFor(x => x.UserProfileViewModel.PostedFile, new { @class = "form-control", type = "file", multiple = false })
-                                </div>
+                            <div class="col-xs-6">
+                                @Html.LabelFor(x => x.UserProfileViewModel.PostedFile)
+                                @Html.TextBoxFor(x => x.UserProfileViewModel.PostedFile, new { @class = "form-control", type = "file", multiple = false })
                             </div>
                         </div>
-                        </div>
-                        <br />
                         <div class="row narrow-gutter">
-                            <div class="col-xs-12">
+                            <div class="col-xs-6">
                                 <button type="submit" class="btn btn-app btn-block">Güncelle</button>
                             </div>
                         </div>
