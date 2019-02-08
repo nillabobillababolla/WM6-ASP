@@ -20,7 +20,6 @@ namespace Admin.Web.UI.Helpers
         {
             var properties = new AuthenticationProperties() { RedirectUri = RedirectUri };
             context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
-            Console.WriteLine("test");
         }
     }
 }

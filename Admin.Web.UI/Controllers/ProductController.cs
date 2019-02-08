@@ -5,6 +5,7 @@ using Admin.Models.Entities;
 using Admin.Models.Models;
 using Admin.Models.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace Admin.Web.UI.Controllers
             return View();
         }
 
-       [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Add(AddProductViewModel prd)
@@ -46,7 +47,9 @@ namespace Admin.Web.UI.Controllers
             try
             {
                 if (prd.Product.SupProductId.ToString().Replace("0", "").Replace("-", "").Length == 0)
+                {
                     prd.Product.SupProductId = null;
+                }
 
                 prd.Product.LastPriceUpdateDate = DateTime.Now;
                 Product model = new Product()
@@ -83,7 +86,10 @@ namespace Admin.Web.UI.Controllers
                     var dosyayolu = Server.MapPath("~/Upload/") + fileName + extName;
 
                     if (!Directory.Exists(klasoryolu))
+                    {
                         Directory.CreateDirectory(klasoryolu);
+                    }
+
                     file.SaveAs(dosyayolu);
 
                     WebImage img = new WebImage(dosyayolu);
@@ -147,6 +153,33 @@ namespace Admin.Web.UI.Controllers
                     success = false
                 }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult List()
+        {
+            try
+            {
+                List<Product> model = new ProductRepo().GetAll();
+                if (model != null)
+                {
+                    return View(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Model"] = new ErrorViewModel()
+                {
+                    Text = $"Bir hata oluştu: {ex.Message}",
+                    ActionName = "List",
+                    ControllerName = "Product",
+                    ErrorCode = 500
+                };
+                return RedirectToAction("Error", "Home");
+            }
+
+            return RedirectToAction("List", "Product");
         }
     }
 }
