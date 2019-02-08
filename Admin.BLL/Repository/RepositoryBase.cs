@@ -6,7 +6,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
-// ReSharper disable StaticMemberInGenericType
 namespace Admin.BLL.Repository
 {
     public abstract class RepositoryBase<T, TId> : IDisposable
@@ -118,6 +117,7 @@ namespace Admin.BLL.Repository
         {
             return DbObject;
         }
+
         public bool IsDisposed { get; set; }
         public void Dispose()
         {

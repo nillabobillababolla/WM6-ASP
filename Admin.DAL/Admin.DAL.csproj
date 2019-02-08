@@ -83,6 +83,10 @@
     <Compile Include="Migrations\201902041142545_A6.Designer.cs">
       <DependentUpon>201902041142545_A6.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902080817238_A77.cs" />
+    <Compile Include="Migrations\201902080817238_A77.Designer.cs">
+      <DependentUpon>201902080817238_A77.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MyContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -128,6 +132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902041142545_A6.resx">
       <DependentUpon>201902041142545_A6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902080817238_A77.resx">
+      <DependentUpon>201902080817238_A77.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
