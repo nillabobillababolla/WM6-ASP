@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Validation;
+﻿using Admin.BLL.Helpers;
 using Admin.BLL.Repository;
-using System.Linq;
-using System.Web.Mvc;
-using Admin.BLL.Helpers;
 using Admin.Models.Entities;
 using Admin.Models.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.Validation;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Admin.Web.UI.Controllers
 {
@@ -33,7 +33,11 @@ namespace Admin.Web.UI.Controllers
         {
             try
             {
-                if (model.SupCategoryId == 0) model.SupCategoryId = null;
+                if (model.SupCategoryId == 0)
+                {
+                    model.SupCategoryId = null;
+                }
+
                 if (!ModelState.IsValid)
                 {
                     ModelState.AddModelError("CategoryName", "100 karakteri geçme kardeş");
@@ -102,7 +106,11 @@ namespace Admin.Web.UI.Controllers
         {
             try
             {
-                if (model.SupCategoryId == 0) model.SupCategoryId = null;
+                if (model.SupCategoryId == 0)
+                {
+                    model.SupCategoryId = null;
+                }
+
                 if (!ModelState.IsValid)
                 {
                     model.SupCategoryId = model.SupCategoryId ?? 0;
@@ -123,8 +131,10 @@ namespace Admin.Web.UI.Controllers
                 {
                     dataCategory.TaxRate = data.TaxRate;
                     new CategoryRepo().Update(dataCategory);
-                    if(dataCategory.Categories.Any())
+                    if (dataCategory.Categories.Any())
+                    {
                         UpdateSubTaxRate(dataCategory.Categories);
+                    }
                 }
 
                 void UpdateSubTaxRate(ICollection<Category> dataC)
@@ -134,7 +144,9 @@ namespace Admin.Web.UI.Controllers
                         dataCategory.TaxRate = data.TaxRate;
                         new CategoryRepo().Update(dataCategory);
                         if (dataCategory.Categories.Any())
+                        {
                             UpdateSubTaxRate(dataCategory.Categories);
+                        }
                     }
                 }
                 TempData["Message"] = $"{model.CategoryName} isimli kategori başarıyla güncellenmiştir";
