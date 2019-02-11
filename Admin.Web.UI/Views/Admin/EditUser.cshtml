@@ -72,7 +72,7 @@
                     @Html.HiddenFor(x => x.Id)
                     @Html.Label("Roles", new { @class = "col-md-3 control-label" })
                     <div class="col-md-7">
-                        @Html.DropDownList("Roles", (List<SelectListItem>)ViewBag.RoleList, new { @class = "js-select2 form-control", size = "1", multiple = "multiple" })
+                        @Html.DropDownList("Roles", (List<SelectListItem>)ViewBag.RoleList, new { @class = "js-select2 form-control", size = "1", multiple = "multiple",id="select2id"})
                     </div>
                     <input type="submit" value="Rol Güncelle" class="btn btn-action" />
                 }
