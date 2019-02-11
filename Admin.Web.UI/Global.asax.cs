@@ -20,7 +20,7 @@ namespace Admin.Web.UI
             RoleManager<Role> roleManager = MembershipTools.NewRoleManager();
             foreach (string rol in roller)
             {
-                if (roleManager.RoleExists(rol))
+                if (!roleManager.RoleExists(rol))
                 {
                     roleManager.Create(new Role()
                     {
