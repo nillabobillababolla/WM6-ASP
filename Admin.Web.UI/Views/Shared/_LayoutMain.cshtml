@@ -13,12 +13,14 @@
     <link rel="icon" href="~/assets/img/favicons/favicon.ico" />
 
     <!-- Google fonts -->
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,900%7CRoboto+Slab:300,400%7CRoboto+Mono:400" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,900%7CRoboto+Slab:300,400%7CRoboto+Mono:400" />
     <!-- Page JS Plugins -->
-    <script src="assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
-    <!-- AppUI CSS stylesheets -->
+    
     @Styles.Render("~/bundle/css")
-    @RenderSection("top", false)
+    <link rel="stylesheet" href="~/assets/css/font-awesome.css">
+    <link rel="stylesheet" href="~/assets/css/ionicons.css">
+
+    @RenderSection("top", false); <!-- true yaparsam her sayfa açar şimdi isteğe göre -->
 </head>
 <body class="app-ui layout-has-drawer layout-has-fixed-header">
     <div class="app-layout-canvas">
