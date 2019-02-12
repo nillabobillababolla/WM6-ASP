@@ -123,9 +123,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AutoMapperConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -172,6 +175,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Category\" />
+    <Folder Include="Views\Employee\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -187,6 +192,14 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Admin.BLL\Admin.BLL.csproj">
+      <Project>{E21EBB06-03E7-418A-8DDD-5E225A4B9058}</Project>
+      <Name>Admin.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Admin.Models\Admin.Models.csproj">
+      <Project>{2DFEBD0A-CDE1-414B-9755-6115B13766E8}</Project>
+      <Name>Admin.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kuzey.BLL\Kuzey.BLL.csproj">
       <Project>{9c73a2b1-be8c-4ff7-91b1-3dc27ca5518e}</Project>
       <Name>Kuzey.BLL</Name>
