@@ -4,14 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CF78D1F0-335A-4287-A32B-69D87D7C32B4}</ProjectGuid>
+    <ProjectGuid>{9C73A2B1-BE8C-4FF7-91B1-3DC27CA5518E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kuzey.BLL</RootNamespace>
     <AssemblyName>Kuzey.BLL</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,14 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,18 +45,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Admin.DAL\Admin.DAL.csproj">
-      <Project>{37900178-8e01-4582-aa46-9c95f1af39bb}</Project>
-      <Name>Admin.DAL</Name>
+    <ProjectReference Include="..\Kuzey.DAL\Kuzey.DAL.csproj">
+      <Project>{86d09bf3-024a-427d-8752-8160dff021d1}</Project>
+      <Name>Kuzey.DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Admin.Models\Admin.Models.csproj">
-      <Project>{2dfebd0a-cde1-414b-9755-6115b13766e8}</Project>
-      <Name>Admin.Models</Name>
+    <ProjectReference Include="..\Kuzey.Models\Kuzey.Models.csproj">
+      <Project>{9616c841-624c-4e4f-a267-25dcc59f1c05}</Project>
+      <Name>Kuzey.Models</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
