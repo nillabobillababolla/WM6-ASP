@@ -21,7 +21,7 @@ namespace Admin.Web.UI.Controllers
     [RequireHttps]
     public class AccountController : Controller
     {
-        // GET: Account
+        [HttpGet]
         public ActionResult Index()
         {
             //HttpContext.User.Identity.GetUserId();

@@ -34,6 +34,12 @@ namespace Admin.BLL.Helpers
             sonuc = sonuc.Replace("?", "-");
             sonuc = sonuc.Replace(";", "-");
             sonuc = sonuc.Replace("#", "-sharp");
+            sonuc = sonuc.Replace("æ", "ae");
+            sonuc = sonuc.Replace("ß", "ss");
+            sonuc = sonuc.Replace("á", "a");
+            sonuc = sonuc.Replace("ä", "a");
+            sonuc = sonuc.Replace("è", "e");
+            sonuc = sonuc.Replace("é", "e");
 
             return sonuc;
         }

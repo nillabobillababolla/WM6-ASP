@@ -4,17 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyWebSite.DAL.Repositories.Concretes
 {
-   public class UserRepository : IUserRepository
+    public class UserRepository : IUserRepository
     {
         MyWebSiteContext _db;
         public UserRepository()
         {
-           _db = new MyWebSiteContext();
+            _db = new MyWebSiteContext();
         }
 
         public int AddItem(User item)
@@ -35,9 +33,9 @@ namespace MyWebSite.DAL.Repositories.Concretes
 
         public ICollection<User> GetAllItem(Expression<Func<User, bool>> lambda = null)
         {
-             return lambda == null ? 
-                _db.User.ToList() :
-                _db.User.Where(lambda).ToList();
+            return lambda == null ?
+               _db.User.ToList() :
+               _db.User.Where(lambda).ToList();
         }
 
         public User GetItem(Expression<Func<User, bool>> lambda = null)
@@ -47,7 +45,7 @@ namespace MyWebSite.DAL.Repositories.Concretes
 
         public int UpdateItem(User item)
         {
-           User oldUser = _db.User.Where(x => x.UserId == item.UserId).FirstOrDefault();
+            User oldUser = _db.User.Where(x => x.UserId == item.UserId).FirstOrDefault();
             oldUser.FirstName = item.FirstName;
             oldUser.LastName = item.LastName;
             oldUser.Gender = item.Gender;
