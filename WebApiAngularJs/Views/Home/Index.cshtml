@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
     <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/app.js"></script>
     <script>
         var app = angular.module("myApp", [])
         app.controller("homeCtrl",
@@ -16,7 +17,7 @@
                 $scope.toplam = 0;
                 $scope.kisiler = [];
                 $scope.yeniKisi = {};
-                $scope.topla = function(){
+                $scope.topla = function () {
                     $scope.toplam = $scope.sayi1 + $scope.sayi2;
                     console.log($scope.toplam);
                 }
