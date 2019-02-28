@@ -4,7 +4,7 @@ var app = angular.module("myApp", []);
 
 app.controller("ProductCtrl", function ($scope) {
     $scope.urunler = [];
-
+    $scope.sepet = [];
     function init() {
         var data = JSON.parse(localStorage.getItem("urunler"));
         $scope.urunler = data === null ? [] : data;
@@ -30,6 +30,15 @@ app.controller("ProductCtrl", function ($scope) {
             }
         }
         localStorage.setItem("urunler", JSON.stringify($scope.urunler));
+    };
+
+    $scope.sepetekle = function (id) {
+        $scope.sepet.push({
+            id: id,
+            urunAdi: $scope.yeni.urunAdi,
+            fiyat: $scope.yeni.fiyat,
+            eklenmeZamani: new Date()
+        });
     };
 
     function guid() {

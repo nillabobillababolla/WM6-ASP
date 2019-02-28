@@ -8,7 +8,7 @@
 <html ng-app="myApp">
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Producs</title>
+    <title>Ürünler Listesi</title>
     <script src="~/Scripts/angular.js"></script>
     <script src="~/Scripts/app.js"></script>
 </head>
@@ -31,9 +31,22 @@
         <ul>
             <li ng-repeat="item in urunler | filter: txtara track by item.id ">
                 {{item.urunAdi}} - {{item.fiyat}} ₺
-                <input type="button" value="Sil" ng-click="sil(item.id)"/>
+                <input type="button" value="Sil" ng-click="sil(item.id)" />
             </li>
         </ul>
+        <table>
+            <tr ng-repeat="x in urunler">
+                <td>{{ $index + 1 }}</td>
+                <td>{{ x.urunAdi }}</td>
+                <td>{{ x.fiyat }}</td>
+                <td> <input type="button" name="spt" value="Sepete Ekle" ng-click="sepetekle(x.id)"/> </td>
+            </tr>
+        </table>
+        <table class="main" ng-model="sepet">
+            <tr ng-repeat="x in sepet track by x.id">
+                <td>{{x.id}}</td>
+            </tr>
+        </table>
     </div>
 </body>
 </html>
