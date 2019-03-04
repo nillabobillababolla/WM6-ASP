@@ -1,0 +1,34 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html ng-app="myApp">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Products</title>
+</head>
+<body>
+    <div ng-controller="ProductCtrl"> 
+        <table class="table-dark">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>ProductName</th>
+                    <th>Unit Price</th>
+                    <th>Units In Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+               <tr ng-repeat="(key,item) in productList">
+                   <td>{{key+1}}</td>
+                   <td>{{item.ProductName}}</td>
+                   <td>{{item.UnitPrice}}</td>
+                   <td>{{item.UnitsInStock}}</td>
+               </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
