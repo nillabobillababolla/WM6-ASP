@@ -25,8 +25,11 @@
 
     <script>
         $(function () {
+
+            //Girişte login butonu açık,mesaj butonu kapalı olarak geliyor.
             $("#logindiv").show();
             $("#chatdiv").hide();
+            //Kullanıcı adı ile giriş yapıldığında username değişkenine atıyor.
             $("#btnLogin").click(function () {
                 var username = $("#username").val();
                 if (username == "") return;
@@ -34,13 +37,16 @@
             $("#logindiv").toggle();
             $("#chatdiv").toggle();
             });
+            //SignalR bağlantısı oluşturuldu.
             var signalRHub = $.connection.chatHub;
-
+            //SignalR done olduğunda sendmessage func calisiyor.
             $.connection.hub.start().done(function () {
                 $("#sendmessage").click(function () {
+                    //herkese gönder metodu burada cagriliyor.Aldığı parametreler username ve message.
                     signalRHub.server.herkeseGonder($("#displayname").val(), $("#message").val());
                 });
             });
+            //Client tarafındaki herkesegonder metodu.JavaScript camelCase.
             signalRHub.client.herkeseGonder = function (gonderen, mesaj, tarih) {
                  $("<li></li>").html("<strong>" + gonderen + "</strong>: " + mesaj + "<i>  " + tarih + "</i>")
                     .appendTo("#discussion");
