@@ -1,7 +1,7 @@
 ﻿/// <reference path="angular.js" />
 
 var app = angular.module("myApp", ["dx"]);
-
+var host = 'http://localhost:59068/';
 var customers = [{
     "ID": 1,
     "CompanyName": "Super Mart of the West",
@@ -135,4 +135,81 @@ app.controller("testCtrl", function ($scope) {
             placeholder:"Ara.."
         },
     };
+});
+
+app.controller("customerCtrl", function ($scope, $http) {
+    $scope.data = null;
+    function init() {
+        $http({
+            url: host + 'api/customer/getall',
+            method: "GET"
+        }).then(function (ev) {
+            if (ev.data.success) {
+                $scope.data = ev.data.data;
+                loadGrid();
+            }
+
+        });
+    }
+    function loadGrid() {
+        $scope.dataGridOptions = {
+            dataSource: $scope.data,
+            columns: ["Name", "Surname", "Phone", "Address", "Balance"],
+            showBorders: true,
+            searchPanel: {
+                visible: true,
+                width: 240,
+                placeholder: "Ara..."
+            },
+            pager: {
+                showPageSizeSelector: true,
+                allowedPageSizes: [5, 10, 20],
+                showInfo:true
+            },
+            columnAutoWidth: true,
+            showRowLines: true,
+            showBorders: true,
+            expandedRowKeys: [1],
+            keyExpr: "Id",
+            parentIdExpr: "Id",
+            headerFilter: {
+                visible: true
+            },
+            selection: {
+                mode: "single"
+            },
+        };
+        $scope.treeListOptions = {
+            dataSource: $scope.data,
+            keyExpr: "Id",
+            parentIdExpr: "Id",
+            expandedRowKeys: [1],
+            filterRow: { visible: true },
+            filterPanel: { visible: true },
+            headerFilter: { visible: true },
+            filterValue: ["Name", "=", "Ahmet"],
+            showBorders: true,
+            columns: [{
+                dataField: "Name",
+                dataType: "string"
+            }, {
+                dataField: "Surname",
+                caption: "Surname",
+                dataType: "string"
+            }, {
+                dataField: "Phone",
+                dataType: "string"
+            }, {
+                dataField: "Address",
+                dataType: "string"
+            }, {
+                dataField: "Balance",
+                dataType: "string"
+            }]
+        };
+    }
+
+
+
+    init();
 });
