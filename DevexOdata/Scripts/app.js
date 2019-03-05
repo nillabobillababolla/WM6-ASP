@@ -132,7 +132,7 @@ app.controller("testCtrl", function ($scope) {
         searchPanel: {
             visible: true,
             width: 240,
-            placeholder:"Ara.."
+            placeholder: "Ara.."
         },
     };
 });
@@ -154,17 +154,37 @@ app.controller("customerCtrl", function ($scope, $http) {
     function loadGrid() {
         $scope.dataGridOptions = {
             dataSource: $scope.data,
-            columns: ["Name", "Surname", "Phone", "Address", "Balance"],
+            onSelectionChanged: function (selected) {
+                $scope.selected = selected.selectedRowsData;
+            },
+            columns: [{
+                dataField: "Id",
+                caption: "Müşteri No",
+                visible: false
+            }, "Name", "Surname", "Phone", "Address", {
+                dataField: "Balance",
+                caption: "Balance",
+                dataType: "number",
+                format: "currency"
+            }],
+            "export": {
+                enabled: true,
+                fileName: "Customers+" + parseInt(Math.random() * 100000),
+                allowExportSelectedData: true
+            },
             showBorders: true,
             searchPanel: {
                 visible: true,
                 width: 240,
                 placeholder: "Ara..."
             },
+            scrolling: {
+                columnRenderingMode: "virtual"
+            },
             pager: {
                 showPageSizeSelector: true,
                 allowedPageSizes: [5, 10, 20],
-                showInfo:true
+                showInfo: true
             },
             columnAutoWidth: true,
             showRowLines: true,
@@ -176,40 +196,14 @@ app.controller("customerCtrl", function ($scope, $http) {
                 visible: true
             },
             selection: {
-                mode: "single"
+                mode: "multiple"
             },
-        };
-        $scope.treeListOptions = {
-            dataSource: $scope.data,
-            keyExpr: "Id",
-            parentIdExpr: "Id",
-            expandedRowKeys: [1],
-            filterRow: { visible: true },
-            filterPanel: { visible: true },
-            headerFilter: { visible: true },
-            filterValue: ["Name", "=", "Ahmet"],
-            showBorders: true,
-            columns: [{
-                dataField: "Name",
-                dataType: "string"
-            }, {
-                dataField: "Surname",
-                caption: "Surname",
-                dataType: "string"
-            }, {
-                dataField: "Phone",
-                dataType: "string"
-            }, {
-                dataField: "Address",
-                dataType: "string"
-            }, {
-                dataField: "Balance",
-                dataType: "string"
-            }]
+            columnChooser: {
+                enabled: true,
+                allowSearch: true
+            }
         };
     }
-
-
 
     init();
 });
