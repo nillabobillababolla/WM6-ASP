@@ -34,10 +34,7 @@ app.controller("customerCtrl", function ($scope, $http) {
                 store: {
                     type: "odata",
                     url: '/odata/CustomerOdata',
-                    key: ["Id"],
-                    keyType: {
-                        Id: "Int32"
-                    }
+                    key: "Id"
                 }
             },
             editing: {
